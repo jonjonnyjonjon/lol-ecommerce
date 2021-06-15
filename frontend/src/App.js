@@ -1,20 +1,41 @@
-import { BrowserRouter as Router, Route } from "react-router-dom" 
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Home from "./pages/Home"
+import Login from "./pages/Login"
+import Register from "./pages/Register"
+
 
 function App() {
     return (
-        <Router>
-            <Route path="/" exact>
-                <Home />
-            </Route>
-            <link
-                rel="stylesheet"
-                href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
-                integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
-                crossorigin="anonymous"
-            />
-        </Router>
+        // <Router>
+        //     <Route path="/login">
+        //         <Login />
+        //     </Route>
+
+        //     <Route path="/register">
+        //         <Login />
+        //     </Route>
+
+        //     <Route exact path="/">
+        //         <Home />
+        //     </Route>
+        // </Router>
+
+        <BrowserRouter>
+            <Switch>
+                <Route exact path="/">
+                    <Home />
+                </Route>
+
+                <Route path="/login">
+                    <Login />
+                </Route>
+
+                <Route path="/register">
+                    <Register />
+                </Route>
+            </Switch>
+        </BrowserRouter>
     );
 }
 
