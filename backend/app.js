@@ -10,12 +10,13 @@ app.use(cors())
 
 // Import routes
 const itemsRoute = require("./routes/items")
+const registrationRoute = require("./routes/registration")
+const loginRoute = require("./routes/login")
+
 
 app.use("/items", itemsRoute)
-
-app.get("/", (req, res) => {
-    res.send("Home page")
-})
+app.use("/register", registrationRoute)
+app.use("/login", loginRoute)
 
 mongoose.connect(
     process.env.DB_CONNECTION,

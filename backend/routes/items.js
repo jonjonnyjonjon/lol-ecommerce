@@ -15,7 +15,6 @@ router.get("/", async (req, res) => {
 // Get an item by product name
 router.get("/:product_name", async (req, res) => {
     try {
-        console.log(req.params.product_name)
         const item = await Item.find({ 
             product_name: { $regex: req.params.product_name, $options: "i" } 
         })
