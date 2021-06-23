@@ -3,39 +3,20 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Home from "./pages/Home"
 import Login from "./pages/Login"
 import Register from "./pages/Register"
-
+import Navbar from "./components/Navbar"
 
 function App() {
     return (
-        // <Router>
-        //     <Route path="/login">
-        //         <Login />
-        //     </Route>
-
-        //     <Route path="/register">
-        //         <Login />
-        //     </Route>
-
-        //     <Route exact path="/">
-        //         <Home />
-        //     </Route>
-        // </Router>
-
-        <BrowserRouter>
-            <Switch>
-                <Route exact path="/">
-                    <Home />
-                </Route>
-
-                <Route path="/login">
-                    <Login />
-                </Route>
-
-                <Route path="/register">
-                    <Register />
-                </Route>
-            </Switch>
-        </BrowserRouter>
+        <div className="app">
+            <BrowserRouter>
+                <Navbar />
+                <Switch>
+                    <Route exact path="/" component={Home} />
+                    <Route path="/login" component={Login} />
+                    <Route path="/register" component={Register} />
+                </Switch>
+            </BrowserRouter>
+        </div>
     );
 }
 

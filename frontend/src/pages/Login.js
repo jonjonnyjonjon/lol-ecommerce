@@ -1,26 +1,32 @@
-import { useState, useEffect } from "react"
-import { Link } from "react-router-dom"
+import { useState } from "react"
+import { Link, useHistory } from "react-router-dom"
 import axios from "axios"
+
 import UserDetails from "../components/UserDetails"
 
 function Login() {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
-    const [loginMsg, setLoginMsg] = useState("")
+    const [errorMsg, setErrorMsg] = useState("")
+
+    let history = useHistory()
 
     const login = (e) => {
         e.preventDefault()
 
-        axios.post("http://localhost:5000/login", {
+        axios.post("http://localhost:5000/auth/login", {
             username: username,
             password: password
         })
-            .then(() => {
-                setIsLoggedIn(true)
-                setLoginMsg("Logged in!")
+            .then(res => {
+                if (res.data.error) {
+                    setErrorMsg(res.data.error);
+                } else {
+                    sessionStorage.setItem("token", res.data.token)
+                    sessionStorage.setItem("username", res.data.username)
+                    history.push("/")
+                }
             })
-            .catch(() => setLoginMsg("Login failed."))
     }
 
     return (
@@ -33,7 +39,7 @@ function Login() {
                     submitAction={login}
                     text="Login!"
                 />
-                <p>{loginMsg}</p>
+                <p>{errorMsg}</p>
                 <p>
                     Don't have an account? Register 
                     <Link to="/register">here</Link>
