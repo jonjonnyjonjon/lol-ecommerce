@@ -1,0 +1,21 @@
+import styled from "styled-components"
+
+const Card = styled.div`
+    border: 3px solid red;
+    background: grey;
+`
+
+const CartItemCard = ({ item }) => {
+    return(
+        <Card>
+            <img src={item.img_url} alt={item.item_name}/>
+            <ul>
+                <li>Item name: {item.item_name}</li>
+                <li>Item price per unit: {item.price}</li>
+                <li>Quantity in cart: {item.quantity}</li>
+            </ul>
+        </Card>
+    )
+}
+
+export default CartItemCard

@@ -12,11 +12,11 @@ router.get("/", async (req, res) => {
     }
 })
 
-// Get an item by product name
-router.get("/:product_name", async (req, res) => {
+// Get an item by item name
+router.get("/:item_name", async (req, res) => {
     try {
         const item = await Item.find({ 
-            product_name: { $regex: req.params.product_name, $options: "i" } 
+            item_name: { $regex: req.params.item_name, $options: "i" } 
         })
         res.json(item)
     } catch (err) {
@@ -27,9 +27,9 @@ router.get("/:product_name", async (req, res) => {
 // Insert an item
 router.post("/", async (req,res) => {
     const item = new Item({
-        product_id: req.body.product_id,
-        product_name: req.body.product_name,
-        plaintext: req.body.plaintext,
+        item_id: req.body.item_id,
+        item_name: req.body.item_name,
+        description: req.body.description,
         price: req.body.price,
         img_url: req.body.img_url,
         stock: req.body.stock
@@ -44,9 +44,9 @@ router.post("/", async (req,res) => {
 })
 
 // Delete an item
-// router.delete("/:product_id", async (req, res) => {
+// router.delete("/:item_id", async (req, res) => {
 //     try {
-//         const removeItem = await Item.remove({ _id: req.params.product_id })
+//         const removeItem = await Item.remove({ _id: req.params.item_id })
 //         res.json(removeItem)
 //     } catch (err) {
 //         res.json({ message: err })
@@ -54,11 +54,11 @@ router.post("/", async (req,res) => {
 // })
 
 // Update an item
-// router.patch("/:product_id", async (req, res) => {
+// router.patch("/:item_id", async (req, res) => {
 //     try {
 //         const updateItem = await Item.updateOne(
-//             {_id: req.params.product_id },
-//             { $set: { title: req.body.product_name }}
+//             {_id: req.params.item_id },
+//             { $set: { title: req.body.item_name }}
 //         )
 //         res.json(updateItem)
 //     } catch (err) {

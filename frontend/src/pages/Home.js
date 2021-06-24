@@ -37,7 +37,7 @@ function Home() {
                 <ItemsContainer>
                     { items.map(item => 
                         <ItemCard
-                        key={item.product_id}
+                        key={item.item_id}
                         item={item}
                         ></ItemCard>
                     )} 

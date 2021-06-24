@@ -35,6 +35,7 @@ const Navbar = () => {
         <nav style={navStyle}>
             <NavUl>
                 <li><Link to="/" style={linkStyle}>Home</Link></li>
+                <li><Link to="/cart" style={linkStyle}>Cart</Link></li>
             </NavUl>
 
             {isLoggedIn ?

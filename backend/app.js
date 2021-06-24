@@ -11,11 +11,11 @@ app.use(cors())
 // Import routes
 const itemsRoute = require("./routes/items")
 const usersRoute = require("./routes/users")
-const cartItemsRoute = require("./routes/cartItems")
+const cartsRoute = require("./routes/carts")
 
 app.use("/items", itemsRoute)
 app.use("/auth", usersRoute)
-app.use("/cart", cartItemsRoute)
+app.use("/cart", cartsRoute)
 
 mongoose.connect(
     process.env.DB_CONNECTION,
