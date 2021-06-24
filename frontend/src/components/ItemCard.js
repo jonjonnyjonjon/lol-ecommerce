@@ -21,8 +21,9 @@ const ItemCard = ({ item }) => {
         <Card>
             <img src={item.img_url} alt={item.item_name}/>
             <ul>
-                <li>{item.item_name}</li>
-                <li>{item.price}</li>
+                <li>Item name: {item.item_name}</li>
+                <li>Price: {item.price}</li>
+                <li>Stock: {item.stock}</li>
             </ul>
             <Button variant="primary" onClick={()=> {addToCart(item.item_id)}}>
                 Add To Cart!

@@ -4,24 +4,16 @@ const Item = require("../models/Item")
 
 // Get all items
 router.get("/", async (req, res) => {
-    try {
-        const items = await Item.find()
-        res.json(items)
-    } catch (err) {
-        res.json({ message: err })
-    }
+    const items = await Item.find()
+    res.json(items)
 })
 
 // Get an item by item name
 router.get("/:item_name", async (req, res) => {
-    try {
-        const item = await Item.find({ 
-            item_name: { $regex: req.params.item_name, $options: "i" } 
-        })
-        res.json(item)
-    } catch (err) {
-        res.json({ message: err })
-    }
+    const item = await Item.find({ 
+        item_name: { $regex: req.params.item_name, $options: "i" } 
+    })
+    res.json(item)
 })
 
 // Insert an item
@@ -35,35 +27,40 @@ router.post("/", async (req,res) => {
         stock: req.body.stock
     })
 
-    try {
-        const savedItem = await item.save()
-        res.json(savedItem)
-    } catch (err) {
-        res.json({ message: err })
-    }
+    const savedItem = item.save()
+    res.json(savedItem)
 })
 
-// Delete an item
-// router.delete("/:item_id", async (req, res) => {
-//     try {
-//         const removeItem = await Item.remove({ _id: req.params.item_id })
-//         res.json(removeItem)
-//     } catch (err) {
-//         res.json({ message: err })
-//     }
-// })
+// Reserve items
+router.post("/addReserved", async (req, res) => {
+    const { username, item_id } = req.body
 
-// Update an item
-// router.patch("/:item_id", async (req, res) => {
-//     try {
-//         const updateItem = await Item.updateOne(
-//             {_id: req.params.item_id },
-//             { $set: { title: req.body.item_name }}
-//         )
-//         res.json(updateItem)
-//     } catch (err) {
-//         res.json({ message: err })
-//     }
-// })
+    const item = await Item.findOne({ item_id: item_id })
+    item.reserved.push({ username: username, quantity: 1 })
+    const savedItem = item.save()
+    res.json(savedItem)
+})
+
+// Update user's reserved amount
+router.post("/updateReserved", async (req, res) => {
+    const { username, item_id } = req.body
+
+    const updateReserved = await Item.updateOne({ 
+        "item_id": item_id, 
+        "reserved.username": username 
+    }, { "$inc": { "reserved.$.quantity": 1 } }
+    )
+    res.json(updateReserved)
+})
+
+// Remove reserved items
+router.post("/deleteReserved", async (req, res) => {
+    const { username, item_id } = req.body
+
+    const removeReserved = await Item.updateOne({ "item_id": item_id }, {
+        "$pull": { "reserved": {"username": username} }
+    })
+    res.json(removeReserved)
+})
 
 module.exports = router
