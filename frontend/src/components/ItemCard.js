@@ -10,7 +10,7 @@ const Card = styled.div`
 const ItemCard = ({ item }) => {
 
     const addToCart = (item_id) => {
-        axios.post("http://localhost:5000/cart/add", {
+        axios.post("http://localhost:5000/addToCart", {
             "username": sessionStorage.getItem("username"),
             "item_id": item_id
         })
@@ -25,7 +25,7 @@ const ItemCard = ({ item }) => {
                 <li>Price: {item.price}</li>
                 <li>Stock: {item.stock}</li>
             </ul>
-            <Button variant="primary" onClick={()=> {addToCart(item.item_id)}}>
+            <Button variant="primary" onClick={() => addToCart(item.item_id)}>
                 Add To Cart!
             </Button>
         </Card>

@@ -37,30 +37,53 @@ router.post("/addReserved", async (req, res) => {
 
     const item = await Item.findOne({ item_id: item_id })
     item.reserved.push({ username: username, quantity: 1 })
-    const savedItem = item.save()
-    res.json(savedItem)
+    item.save()
+
+    const updateStock = await Item.updateOne({
+        item_id: item_id
+    }, {"$inc": { stock: -1 }})
+
+    res.json(updateStock)
 })
 
-// Update user's reserved amount
+// Update user's reserved amount - can be +1 or -1
 router.post("/updateReserved", async (req, res) => {
-    const { username, item_id } = req.body
+    const { username, item_id, quantity } = req.body
 
-    const updateReserved = await Item.updateOne({ 
+    // Update reserved amount for user
+    await Item.updateOne({ 
         "item_id": item_id, 
         "reserved.username": username 
-    }, { "$inc": { "reserved.$.quantity": 1 } }
+    }, { "$inc": { "reserved.$.quantity": quantity } }
     )
-    res.json(updateReserved)
+
+    // Reduce stock count
+    const updateStock = await Item.updateOne({
+        item_id: item_id
+    }, {"$inc": { stock: -quantity }})
+
+    res.json(updateStock)
 })
 
 // Remove reserved items
 router.post("/deleteReserved", async (req, res) => {
     const { username, item_id } = req.body
 
-    const removeReserved = await Item.updateOne({ "item_id": item_id }, {
+    // Add back the reserved amount to stock count
+    const userReserved = await Item.findOne({ item_id: item_id })
+        .select({reserved: {$elemMatch: {username : username}}})
+    const qtyToOffset = userReserved.reserved[0].quantity
+
+    const updateStock = await Item.updateOne({
+        item_id: item_id
+    }, {"$inc": { stock: qtyToOffset }})
+
+    // Remove reserved entry for user
+    await Item.updateOne({ "item_id": item_id }, {
         "$pull": { "reserved": {"username": username} }
     })
-    res.json(removeReserved)
+
+    res.json(updateStock)
 })
 
 module.exports = router

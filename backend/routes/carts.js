@@ -1,4 +1,5 @@
 const express = require("express")
+const axios = require("axios")
 const router = express.Router()
 
 const UserCart = require("../models/UserCart")
@@ -43,6 +44,26 @@ router.post("/updateCartItemQty", async (req, res) => {
     }, { "$inc": { "items.$.quantity": 1 } }
     )
     res.json(updateUserCart)
+})
+
+// Remove user's cart
+router.post("/removeCart", async (req, res) => {
+    const { username } = req.body
+    const cart = await UserCart.findOne({
+        username: username
+    })
+
+    // for each item in the cart, remove its reserved quantity 
+    for (let i = 0; i < cart.items.length; i++) {
+        axios.post("http://localhost:5000/items/deleteReserved", {
+            username: username,
+            item_id: cart.items[i].item_id
+        })
+    }
+    // Delete user's cart
+    await UserCart.deleteOne({ username: username })
+    
+    res.json()
 })
 
 module.exports = router

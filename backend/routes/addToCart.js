@@ -58,7 +58,8 @@ router.post("/", async (req, res) => {
             // Update quantity of reserved item for user
             axios.post("http://localhost:5000/items/updateReserved", {
                 username: username,
-                item_id: item_id
+                item_id: item_id,
+                quantity: 1
             })
 
             res.json("Another of item has been added to your cart and reserved for you!")

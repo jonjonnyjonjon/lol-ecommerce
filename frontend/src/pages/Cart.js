@@ -15,11 +15,19 @@ function Cart() {
             .catch(err => console.log(err))
     }, [])
 
+    const clearCart = () => {
+        axios.post("http://localhost:5000/cart/removeCart", {
+            "username": sessionStorage.getItem("username")
+        })
+            .then(() => alert("Your cart has been cleared!"))
+            .catch(err => alert(err))
+    }
+
     return (
         <main>
             <section>
                 <h1>Your Cart</h1>
-                
+                <button onClick={clearCart}>Clear cart</button>
                 <ItemsContainer>
                     { userCartItems.map(cartItem => 
                         <CartItemCard

@@ -1,3 +1,4 @@
+import axios from "axios"
 import styled from "styled-components"
 
 const Card = styled.div`
@@ -6,6 +7,10 @@ const Card = styled.div`
 `
 
 const CartItemCard = ({ item }) => {
+    const removeCartItem = (item_id) => {
+        
+    }
+
     return(
         <Card>
             <img src={item.img_url} alt={item.item_name}/>
@@ -14,6 +19,7 @@ const CartItemCard = ({ item }) => {
                 <li>Item price per unit: {item.price}</li>
                 <li>Quantity in cart: {item.quantity}</li>
             </ul>
+            <button onClick={() => removeCartItem(item.item_id)}>Remove item</button>
         </Card>
     )
 }

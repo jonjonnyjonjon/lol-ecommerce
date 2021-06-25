@@ -10,7 +10,7 @@ const ItemSchema = mongoose.Schema({
     price: Number,
     img_url: String,
     stock: Number,
-    reserved: [{ username: String, quantity: Number }]
+    reserved: [{ username: {type: String, unique: true}, quantity: Number }]
 })
 
 module.exports = mongoose.model("Item", ItemSchema)
